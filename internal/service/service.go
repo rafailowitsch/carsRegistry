@@ -1,8 +1,8 @@
 package service
 
 import (
-	"carRegistry/internal/domain"
-	"carRegistry/internal/repository"
+	"carsRegistry/internal/domain"
+	"carsRegistry/internal/repository"
 )
 
 type Owners interface {

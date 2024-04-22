@@ -1,6 +1,6 @@
 package main
 
-import "carRegistry/internal/app"
+import "carsRegistry/internal/app"
 
 func main() {
 	app.Run()

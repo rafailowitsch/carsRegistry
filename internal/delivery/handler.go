@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"carRegistry/internal/service"
+	"carsRegistry/internal/service"
 	"encoding/json"
 	"net/http"
 )

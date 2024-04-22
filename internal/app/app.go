@@ -1,10 +1,10 @@
 package app
 
 import (
-	"carRegistry/internal/config"
-	"carRegistry/internal/delivery"
-	"carRegistry/internal/repository"
-	"carRegistry/internal/service"
+	"carsRegistry/internal/config"
+	"carsRegistry/internal/delivery"
+	"carsRegistry/internal/repository"
+	"carsRegistry/internal/service"
 	"fmt"
 	"log"
 	"net/http"
