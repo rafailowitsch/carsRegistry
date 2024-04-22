@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"automobileRegistry_/internal/domain"
+	"carRegistry/internal/domain"
 	"github.com/google/uuid"
 	"testing"
 )
@@ -13,12 +13,15 @@ func TestCreateAndDeletePeople(t *testing.T) {
 		Surname:    "Smith",
 		Patronymic: "Middle",
 	}
-	err := CreateOwner(db, &owner)
+
+	ownersRepo := NewOwnersRepo(db)
+
+	err := ownersRepo.CreateOwner(&owner)
 	if err != nil {
 		t.Errorf("Failed to create person: %v", err)
 	}
 
-	retrievedPerson, err := GetOwnerByID(db, owner.ID)
+	retrievedPerson, err := ownersRepo.GetOwnerByID(owner.ID)
 	if err != nil {
 		t.Errorf("Failed to retrieve person: %v", err)
 	}
@@ -27,7 +30,7 @@ func TestCreateAndDeletePeople(t *testing.T) {
 		t.Errorf("Retrieved person name mismatch: expected Alice, got %s", retrievedPerson.Name)
 	}
 
-	err = DeleteOwner(db, owner.ID)
+	err = ownersRepo.DeleteOwner(owner.ID)
 	if err != nil {
 		t.Errorf("Failed to delete person: %v", err)
 	}

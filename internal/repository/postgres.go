@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"automobileRegistry_/internal/domain"
+	"carRegistry/internal/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func NewGormDB(conn string) (*gorm.DB, error) {
+func NewPostgresDB(conn string) (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(conn), &gorm.Config{})
 	if err != nil {
 		return nil, err

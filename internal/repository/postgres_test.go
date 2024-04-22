@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"automobileRegistry_/internal/domain"
+	"carRegistry/internal/domain"
 	"log"
 	"os"
 	"testing"

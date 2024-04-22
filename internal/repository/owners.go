@@ -1,25 +1,36 @@
 package repository
 
 import (
-	"automobileRegistry_/internal/domain"
+	"carRegistry/internal/domain"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
-func CreateOwner(db *gorm.DB, person *domain.Owners) error {
-	return db.Create(person).Error
+type OwnersRepo struct {
+	db *gorm.DB
 }
 
-func GetOwnerByID(db *gorm.DB, id uuid.UUID) (domain.Owners, error) {
-	var person domain.Owners
-	result := db.First(&person, "id = ?", id)
-	return person, result.Error
+func NewOwnersRepo(db *gorm.DB) *OwnersRepo {
+	return &OwnersRepo{db: db}
 }
 
-func UpdateOwner(db *gorm.DB, person *domain.Owners) error {
-	return db.Save(person).Error
+func (o *OwnersRepo) CreateOwner(owner *domain.Owners) error {
+	return o.db.Create(owner).Error
 }
 
-func DeleteOwner(db *gorm.DB, id uuid.UUID) error {
-	return db.Delete(&domain.Owners{}, id).Error
+func (o *OwnersRepo) GetOwnerByID(id uuid.UUID) (*domain.Owners, error) {
+	var owner domain.Owners
+	result := o.db.First(&owner, "id = ?", id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &owner, nil
+}
+
+func (o *OwnersRepo) UpdateOwner(owner *domain.Owners) error {
+	return o.db.Save(owner).Error
+}
+
+func (o *OwnersRepo) DeleteOwner(id uuid.UUID) error {
+	return o.db.Delete(&domain.Owners{}, id).Error
 }
