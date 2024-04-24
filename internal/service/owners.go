@@ -23,3 +23,11 @@ func (s *OwnersService) CreateOwner(ownerInput domain.OwnersInput) error {
 	}
 	return s.OwnersRepo.CreateOwner(owner)
 }
+
+func (s *OwnersService) GetOwnerByID(id string) (*domain.Owners, error) {
+	ownerID, err := uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+	return s.OwnersRepo.GetOwnerByID(ownerID)
+}

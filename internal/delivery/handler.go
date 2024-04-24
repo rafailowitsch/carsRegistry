@@ -27,10 +27,12 @@ func (h *Handler) InitRoutes() *chi.Mux {
 
 	r.Route("/cars", func(r chi.Router) {
 		r.Post("/", h.createCar)
-		//r.Get("/{id}", h.getCarByID)
-		//r.Put("/{id}", h.updateCar)
-		//r.Delete("/{id}", h.deleteCar)
+		r.Post("/add", h.addCars)
+		r.Get("/{regNumber}", h.getCarByID)
+		r.Put("/{regNumber}", h.updateCar)
+		r.Delete("/{regNumber}", h.deleteCar)
 		r.Get("/getCars", h.getCars)
+		r.Get("/info/{regNumber}", h.integrationGetCarByID)
 	})
 
 	return r

@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: carRegistry
+      POSTGRES_DB: carsRegistry
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qwerty
     ports:

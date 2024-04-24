@@ -3,6 +3,7 @@ package app
 import (
 	"carsRegistry/internal/config"
 	"carsRegistry/internal/delivery"
+	"carsRegistry/internal/integration"
 	"carsRegistry/internal/repository"
 	"carsRegistry/internal/service"
 	"fmt"
@@ -29,8 +30,11 @@ func Run() {
 		log.Fatalf("Unable to connect to DB: %v", err)
 	}
 
+	depIntegrations := integration.DepIntegrations{CarsInfoURL: cfg.CarsInfoURL}
+
 	repos := repository.NewRepository(db)
-	services := service.NewServices(repos)
+	integrations := integration.NewIntegrations(depIntegrations)
+	services := service.NewServices(repos, integrations)
 	handler := delivery.NewHandler(services)
 
 	var srv http.Server
