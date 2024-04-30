@@ -10,11 +10,11 @@ import (
 
 type CarsService struct {
 	CarsRepo        repository.Cars
-	OwnersRepo      *repository.Owners
+	OwnersRepo      repository.Owners
 	CarsIntegration integration.CarsInfoClient
 }
 
-func NewCarsService(carsRepo repository.Cars, ownersRepo *repository.Owners, carsIntegration integration.CarsInfoClient) *CarsService {
+func NewCarsService(carsRepo repository.Cars, ownersRepo repository.Owners, carsIntegration integration.CarsInfoClient) *CarsService {
 	return &CarsService{CarsRepo: carsRepo, OwnersRepo: ownersRepo, CarsIntegration: carsIntegration}
 }
 
@@ -71,7 +71,7 @@ func (s *CarsService) UpdateCar(carInput domain.CarsInput) error {
 	}
 
 	if carInput.OwnerID != uuid.Nil {
-		owner, err := (*s.OwnersRepo).GetOwnerByID(carInput.OwnerID)
+		owner, err := s.OwnersRepo.GetOwnerByID(carInput.OwnerID)
 		if err != nil {
 			return err
 		}

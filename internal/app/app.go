@@ -6,16 +6,21 @@ import (
 	"carsRegistry/internal/integration"
 	"carsRegistry/internal/repository"
 	"carsRegistry/internal/service"
+	l "carsRegistry/pkg/logg"
 	"fmt"
-	"log"
+	lr "github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func Run() {
+	l.LogInfo("app:Run", "Starting the application", lr.Fields{})
+
 	cfg, err := config.LoadConfig(".env")
 	if err != nil {
-		log.Fatalf("Unable to load config: %v", err)
+		l.LogError("app:Run", "Failed to load config", err, lr.Fields{})
+		return
 	}
+	l.LogInfo("app:Run", "Config loaded", lr.Fields{})
 
 	connString := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s",
 		cfg.DBUser,
@@ -24,11 +29,12 @@ func Run() {
 		cfg.DBPort,
 		cfg.DBName,
 	)
-
 	db, err := repository.NewPostgresDB(connString)
 	if err != nil {
-		log.Fatalf("Unable to connect to DB: %v", err)
+		l.LogError("app:Run", "Failed to connect to the database", err, lr.Fields{"connString": connString})
+		return
 	}
+	l.LogInfo("app:Run", "Connected to the database", lr.Fields{})
 
 	depIntegrations := integration.DepIntegrations{CarsInfoURL: cfg.CarsInfoURL}
 
@@ -40,6 +46,7 @@ func Run() {
 	var srv http.Server
 	srv.Handler = handler.InitRoutes()
 	srv.Addr = cfg.SRVHost + ":" + cfg.SRVPort
-	log.Printf("Server started on %s", srv.Addr)
+	l.LogInfo("app:Run", "Server started", lr.Fields{"host": cfg.SRVHost, "port": cfg.SRVPort})
 	srv.ListenAndServe()
+	l.LogInfo("app:Run", "Server stopped", lr.Fields{})
 }

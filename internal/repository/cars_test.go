@@ -1,41 +1,48 @@
 package repository
 
 import (
-	"carRegistry/internal/domain"
+	"carsRegistry/internal/domain"
 	"github.com/google/uuid"
 	"testing"
 )
 
 func TestCreateAndUpdateCar(t *testing.T) {
 	owner := domain.Owners{
-		ID:      uuid.New(),
-		Name:    "Bob",
-		Surname: "Jones",
+		ID:         uuid.New(),
+		Name:       "Bob",
+		Surname:    "Jones",
+		Patronymic: "Middle",
 	}
 
-	repo := NewRepository(db)
+	ownersRepo := NewOwnersRepo(db)
 
-	_ = repo.OwnersRepo.CreateOwner(&owner)
+	err := ownersRepo.CreateOwner(&owner)
+	if err != nil {
+		t.Fatalf("Failed to create owner: %v", err)
+	}
 
 	car := domain.Cars{
 		RegNumber: "X999XX99",
 		Mark:      "Toyota",
 		Model:     "Camry",
 		Year:      "2020",
-		OwnerID:   owner.ID,
+		OwnerID:   &owner.ID,
 	}
-	err := repo.CarsRepo.CreateCar(&car)
+
+	carsRepo := NewCarsRepo(db)
+
+	err = carsRepo.CreateCar(&car)
 	if err != nil {
 		t.Fatalf("Failed to create car: %v", err)
 	}
 
 	car.Mark = "Honda"
-	err = repo.CarsRepo.UpdateCar(&car)
+	err = carsRepo.UpdateCar(&car)
 	if err != nil {
 		t.Errorf("Failed to update car: %v", err)
 	}
 
-	retrievedCar, err := repo.CarsRepo.GetCarByRegNumber(car.RegNumber)
+	retrievedCar, err := carsRepo.GetCarByRegNumber(car.RegNumber)
 	if err != nil {
 		t.Errorf("Failed to retrieve car: %v", err)
 	}
@@ -44,6 +51,13 @@ func TestCreateAndUpdateCar(t *testing.T) {
 		t.Errorf("Retrieved car mark mismatch: expected Honda, got %s", retrievedCar.Mark)
 	}
 
-	_ = repo.CarsRepo.DeleteCar(car.RegNumber) // Очистка после теста
-	_ = repo.OwnersRepo.DeleteOwner(owner.ID)  // Удаление владельца
+	err = carsRepo.DeleteCar(car.RegNumber)
+	if err != nil {
+		t.Errorf("Failed to delete car: %v", err)
+	}
+	//
+	err = ownersRepo.DeleteOwner(owner.ID)
+	if err != nil {
+		t.Errorf("Failed to delete owner: %v", err)
+	}
 }

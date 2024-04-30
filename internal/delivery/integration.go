@@ -8,13 +8,13 @@ import (
 func (h *Handler) integrationGetCarByID(w http.ResponseWriter, r *http.Request) {
 	regNumber := chi.URLParam(r, "regNum")
 	if regNumber == "" {
-		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		respondWithJSON(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
 	car, err := h.services.CarsService.IntegrationGetCarByRegNumber(regNumber)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
+		respondWithJSON(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

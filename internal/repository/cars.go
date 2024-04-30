@@ -25,7 +25,6 @@ func (c *CarsRepo) GetCarByRegNumber(regNumber string) (*domain.Cars, error) {
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	log.Println(car)
 	return &car, nil
 }
 
@@ -34,7 +33,7 @@ func (c *CarsRepo) UpdateCar(car *domain.Cars) error {
 	if err != nil {
 		return err
 	}
-
+	log.Println(existingCar)
 	existingCar.Mark = car.Mark
 	existingCar.Model = car.Model
 	existingCar.Year = car.Year
@@ -42,7 +41,7 @@ func (c *CarsRepo) UpdateCar(car *domain.Cars) error {
 		existingCar.OwnerID = car.OwnerID
 		existingCar.Owner = car.Owner
 	}
-	log.Println(existingCar, *existingCar.Owner)
+
 	return c.db.Save(existingCar).Error
 }
 

@@ -13,7 +13,7 @@ import (
 var db *gorm.DB
 
 func TestMain(m *testing.M) {
-	dsn := "host=localhost user=postgres password=qwerty dbname=carsRegistry port=5444"
+	dsn := "host=localhost user=postgres password=qwerty dbname=carRegistry port=5444"
 	var err error
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

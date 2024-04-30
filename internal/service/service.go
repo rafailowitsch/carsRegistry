@@ -32,6 +32,6 @@ func NewServices(repo *repository.Repository, integration *integration.Integrati
 	ownersService := NewOwnersService(repo.OwnersRepo)
 	return &Services{
 		OwnersService: ownersService,
-		CarsService:   NewCarsService(repo.CarsRepo, &ownersService.OwnersRepo, *integration.CarsInfoClient),
+		CarsService:   NewCarsService(repo.CarsRepo, ownersService.OwnersRepo, *integration.CarsInfoClient),
 	}
 }

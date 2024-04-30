@@ -8,7 +8,7 @@ import (
 
 func NewPostgresDB(conn string) (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(conn), &gorm.Config{
-		//Logger: logger.Default.LogMode(logger.Info),
+		//Logger: logg.go.Default.LogMode(logg.go.Info),
 	})
 	if err != nil {
 		return nil, err

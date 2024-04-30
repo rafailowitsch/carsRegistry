@@ -2,9 +2,10 @@ package integration
 
 import (
 	"carsRegistry/internal/domain"
+	"carsRegistry/pkg/logg"
 	"encoding/json"
 	"fmt"
-	"log"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -22,7 +23,7 @@ func NewCarsInfoClient(baseURL string) *CarsInfoClient {
 }
 
 func (c *CarsInfoClient) FetchCarInfo(regNum string) (*domain.CarsInfo, error) {
-	log.Println("c.baseURL: ", c.baseURL, regNum)
+	logg.LogInfo("integration:FetchCarInfo", "Fetching car info", logrus.Fields{"regNum": regNum})
 	if c.baseURL == "" || regNum == "" {
 		return &domain.CarsInfo{}, fmt.Errorf("baseURL or regNum is empty")
 	}
